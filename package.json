@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "remix-master",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -8,23 +8,35 @@
     "dev": "remix vite:dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "db:setup": "bun run db:setup-docker && bun run db:setup-schema && bun run db:setup-seed",
+    "db:setup-docker": "chmod +x ./db/start-database.sh && ./db/start-database.sh",
+    "db:setup-schema": "drizzle-kit push --config db/drizzle.config.ts --force",
+    "db:setup-seed": "PGPASSWORD=password unzip db/seed.sql.zip && psql -h localhost -d remix-master -U postgres -f ./db/seed.sql",
+    "db:push": "drizzle-kit push --config db/drizzle.config.ts",
+    "db:studio": "drizzle-kit studio --config db/drizzle.config.ts"
   },
   "dependencies": {
     "@remix-run/node": "^2.13.1",
     "@remix-run/react": "^2.13.1",
     "@remix-run/serve": "^2.13.1",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.35.3",
     "isbot": "^4.1.0",
+    "pg": "^8.13.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "valibot": "^0.42.1"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.13.1",
+    "@types/pg": "^8.11.10",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
     "autoprefixer": "^10.4.19",
+    "drizzle-kit": "^0.26.2",
     "eslint": "^8.38.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.28.1",
@@ -33,6 +45,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.4",
+    "tsx": "^4.19.1",
     "typescript": "^5.1.6",
     "vite": "^5.1.0",
     "vite-tsconfig-paths": "^4.2.1"
