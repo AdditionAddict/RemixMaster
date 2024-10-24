@@ -5,3 +5,8 @@ node_modules
 .env
 .DS_Store
 db/seed.sql
+/test-results/
+/tests-examples/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
